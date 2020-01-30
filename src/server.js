@@ -1,9 +1,10 @@
 const express = require('express');
 const fileupload = require('express-fileupload');
 const path = require('path');
-require('color');
+require('colors');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
 const errorHandler = require('./middleware/error');
 const connectDB = require('./db/db');
 // Route files
@@ -16,6 +17,9 @@ const app = express();
 
 // Body parser
 app.use(express.json());
+
+// Cookie parser
+app.use(cookieParser());
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -36,7 +40,7 @@ const PORT = process.env.PORT;
 const server = app.listen(
   PORT,
   console.log(
-    `Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`
+    `Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`.red
   )
 );
 

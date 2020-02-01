@@ -2,6 +2,7 @@ const express = require('express');
 const fileupload = require('express-fileupload');
 const path = require('path');
 require('colors');
+const mongoSanitize = require('express-mongo-sanitize');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
@@ -11,6 +12,8 @@ const connectDB = require('./db/db');
 const bootcamps = require('./routes/bootcamps');
 const courses = require('./routes/courses');
 const auth = require('./routes/auth');
+const users = require('./routes/users');
+const reviews = require('./routes/reviews');
 
 connectDB();
 const app = express();
@@ -27,6 +30,9 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use(fileupload());
 
+// Sanitize the data
+app.use(mongoSanitize);
+
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -34,6 +40,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/v1/bootcamps', bootcamps);
 app.use('/api/v1/courses', courses);
 app.use('/api/v1/auth', auth);
+app.use('/api/v1/auth/users', users);
+app.use('/api/v1/reviews', reviews);
 app.use(errorHandler);
 const PORT = process.env.PORT;
 
